@@ -1,0 +1,109 @@
+---
+# title: "A title"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+geometry: margin=0.1cm
+params:
+  processed_raw_data_df: ""
+  current_df: ""
+  trend_df: ""
+  your_department: "Fire" #Department Name
+  raw_data_filepath: "File Path to Raw Data"
+# date: ''
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+packages <- c("tidyverse", "readxl", "janitor","ggplot2","tinytex","writexl","tidyr")
+package.check <- lapply(packages, require, character.only = TRUE)
+source("utils.R")
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Load in parameters from either .r or directly from .rmd
+your_department <- params$your_department
+raw_data_filepath <- ifelse(params$raw_data_filepath == "File Path to Raw Data", file.choose(), params$raw_data_filepath)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Load in parameters from either .r or directly from .rmd
+if (typeof(params$processed_raw_data_df) == 'character'){
+  df <- read_excel(raw_data_filepath, sheet = "Raw Data")
+  df <- utils.process_scorecard_raw_data(df)
+  df <- utils.process_scorecard_assign_your_department(df, your_department)
+  current_df <- utils.process_scorecard_season_current(df)
+  trend_df <- utils.process_scorecard_season_trend(df)
+} else {
+  df <- params$processed_raw_data_df
+  current_df <- params$current_df
+  trend_df <- params$trend_df
+}
+season_current <- tail(levels(df$season), n=1)
+```
+
+![](Picture1.jpg){width=100%}
+
+```{=latex}
+\fontsize{25}{25}
+\begin{center}
+\textbf{Email Phishing Scorecard - `r season_current`}
+\\[5pt]
+\textbf{`r your_department`}
+\end{center}
+
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center',fig.height=3.7}
+# Shared plot elements
+
+shared_thm <- theme(plot.title = element_text(face = "bold", hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  theme(legend.title= element_blank()
+        , legend.position="bottom"
+        , plot.background = element_rect(color = "grey", size = 1)
+        , plot.margin = margin(t=0.5, r=1, b=0.3, l=0.5, "cm"))
+series_colors <- c("cornflowerblue", "red")
+y_pct_scale = scale_y_continuous(labels = scales::percent, breaks = scales::pretty_breaks(n = 6))
+```
+
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center',fig.height=3.7}
+# First plot
+plt <- ggplot(current_df, aes(x=dept_true_count, y=dept_click_rate, color=series)) + 
+  geom_point(aes(color=series)) +
+  y_pct_scale +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 6)) +
+  scale_color_manual(values = series_colors) +
+  theme_bw() +
+  labs(title = 'This Season Fail Rates',
+       subtitle = '(Closer to 0% and 0 is better.)',
+       x = 'Number Failed',
+       y = 'Fail Rate') + shared_thm
+plt
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.height=3.7}
+# Second plot
+plt <- ggplot(trend_df, aes(x=season, y=mean_rate)) + 
+  geom_point(aes(color = series)) +
+  geom_text(aes(label=scales::percent(mean_rate))
+            , hjust=-0.1
+            , vjust=0
+            , size = 2) +
+  geom_line(aes(color = series, linetype = series, group = series)) +
+  y_pct_scale +
+  scale_color_manual(values = series_colors) +
+  theme_bw() +
+  labs(title = 'Fail Rate Trend',
+       x = '',
+       y = '') + shared_thm
+plt
+```
