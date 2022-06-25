@@ -1,4 +1,5 @@
-scorecard_reports/*.*
+scorecard_reports/*
+!scorecard_reports/.gitkeep
 
 # History files
 .Rhistory
