@@ -1,4 +1,6 @@
-packages <- c("tidyverse", "readxl", "janitor","ggplot2","tinytex","writexl","tidyr","installr")
+source("utils.R")
+
+packages <- utils.packages_vector()
 package.check <- lapply(
   packages,
   FUN = function(x) {
@@ -21,4 +23,6 @@ tryCatch({
 }
 )
 
-# installr::install.pandoc()
+# needed if running with Rscript through command line
+# install.packages("installr")
+# installr::install.pandoc() 

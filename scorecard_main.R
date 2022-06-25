@@ -1,6 +1,6 @@
 
 ## Load packages needed for .r and rmd file
-packages <- c("tidyverse", "readxl", "janitor","ggplot2","tinytex","writexl","tidyr")
+packages <- utils.packages_vector()
 package.check <- lapply(packages, require, character.only = TRUE)
 source("utils.R")
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))

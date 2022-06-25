@@ -2,6 +2,10 @@ packages <- c("tidyverse", "readxl", "janitor","ggplot2","tinytex","writexl","ti
 package.check <- lapply(packages, require, character.only = TRUE)
 
 
+utils.packages_vector <- function(){
+  return(c("tidyverse", "readxl", "janitor","ggplot2","tinytex","writexl","tidyr","rmarkdown"))
+}
+
 utils.filter_scorecard_raw_data_by_department <- function(df, your_deptartment) {
   df <- df %>%
     filter(Department == your_deptartment)
