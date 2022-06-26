@@ -1,5 +1,5 @@
-scorecard_reports/*
-!scorecard_reports/.gitkeep
+scorecard/scorecard_reports/*
+!scorecard/scorecard_reports/.gitkeep
 testing/
 *.json
 
