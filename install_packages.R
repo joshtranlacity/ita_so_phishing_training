@@ -1,7 +1,7 @@
 source("utils.R")
 
 packages <- utils.packages_vector()
-package.check <- lapply(
+package_check <- lapply(
   packages,
   FUN = function(x) {
     if (!require(x, character.only = TRUE)) {

@@ -1,5 +1,7 @@
 scorecard_reports/*
 !scorecard_reports/.gitkeep
+testing/
+*.json
 
 # History files
 .Rhistory

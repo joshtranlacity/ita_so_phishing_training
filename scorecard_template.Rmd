@@ -22,18 +22,21 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 source("utils.R")
 packages <- utils.packages_vector()
-package.check <- lapply(packages, require, character.only = TRUE)
+package_check <- lapply(packages, require, character.only = TRUE)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Load in parameters from either .r or directly from .rmd
 your_department <- params$your_department
-raw_data_filepath <- ifelse(params$raw_data_filepath == "File Path to Raw Data", file.choose(), params$raw_data_filepath)
+raw_data_filepath <- ifelse(params$raw_data_filepath == "File Path to Raw Data"
+  , file.choose()
+  , params$raw_data_filepath
+)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Load in parameters from either .r or directly from .rmd
-if (typeof(params$processed_raw_data_df) == 'character'){
+if (typeof(params$processed_raw_data_df) == "character"){
   df <- read_excel(raw_data_filepath, sheet = "Raw Data")
   df <- utils.process_scorecard_raw_data(df)
   df <- utils.process_scorecard_assign_your_department(df, your_department)
@@ -44,7 +47,7 @@ if (typeof(params$processed_raw_data_df) == 'character'){
   current_df <- params$current_df
   trend_df <- params$trend_df
 }
-season_current <- tail(levels(df$season), n=1)
+season_current <- tail(levels(df$season), n = 1)
 ```
 
 ![](Picture1.jpg){width=100%}
@@ -59,7 +62,6 @@ season_current <- tail(levels(df$season), n=1)
 
 ```
 
-
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center',fig.height=3.7}
 # Shared plot elements
 
@@ -68,9 +70,10 @@ shared_thm <- theme(plot.title = element_text(face = "bold", hjust = 0.5),
   theme(legend.title= element_blank()
         , legend.position="bottom"
         , plot.background = element_rect(color = "grey", size = 1)
-        , plot.margin = margin(t=0.5, r=1, b=0.3, l=0.5, "cm"))
+        , plot.margin = margin(t = 0.5, r = 1, b = 0.3, l = 0.5, "cm"))
 series_colors <- c("cornflowerblue", "red")
-y_pct_scale = scale_y_continuous(labels = scales::percent, breaks = scales::pretty_breaks(n = 6))
+y_pct_scale <- scale_y_continuous(labels = scales::percent
+  , breaks = scales::pretty_breaks(n = 6))
 ```
 
 
@@ -83,27 +86,27 @@ plt <- ggplot(current_df, aes(x=dept_true_count, y=dept_click_rate, color=series
   scale_x_continuous(breaks = scales::pretty_breaks(n = 6)) +
   scale_color_manual(values = series_colors) +
   theme_bw() +
-  labs(title = 'This Season Fail Rates',
-       subtitle = '(Closer to 0% and 0 is better.)',
-       x = 'Number Failed',
-       y = 'Fail Rate') + shared_thm
+  labs(title = "This Season Fail Rates",
+       subtitle = "(Closer to 0% and 0 is better.)",
+       x = "Number Failed",
+       y = "Fail Rate") + shared_thm
 plt
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.height=3.7}
 # Second plot
-plt <- ggplot(trend_df, aes(x=season, y=mean_rate)) + 
+plt <- ggplot(trend_df, aes(x = season, y = mean_rate)) +
   geom_point(aes(color = series)) +
-  geom_text(aes(label=scales::percent(mean_rate))
-            , hjust=-0.1
-            , vjust=0
+  geom_text(aes(label = scales::percent(mean_rate))
+            , hjust = -0.1
+            , vjust = 0
             , size = 2) +
   geom_line(aes(color = series, linetype = series, group = series)) +
   y_pct_scale +
   scale_color_manual(values = series_colors) +
   theme_bw() +
-  labs(title = 'Fail Rate Trend',
-       x = '',
-       y = '') + shared_thm
+  labs(title = "Fail Rate Trend",
+       x = "",
+       y = "") + shared_thm
 plt
 ```
