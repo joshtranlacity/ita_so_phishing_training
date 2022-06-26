@@ -30,7 +30,7 @@ write_xlsx(datasheet_names, paste0("./scorecard_reports/", season_current," Phis
 
 for (department in departments) {
   output_file <- paste("./scorecard_reports/", department,' - ', season_current, ' Phising Scorecard.pdf', sep='')
-  output_file <- gsub(' ', '_', output_file)
+  output_file_subbed <- gsub(' ', '_', output_file)
   
   df1 <- utils.process_scorecard_assign_your_department(df, department)
   
@@ -42,7 +42,7 @@ for (department in departments) {
   df3 <- utils.process_scorecard_season_trend(df1)
 
   rmarkdown::render('scorecard_template.Rmd',
-                    output_file = output_file,
+                    output_file = output_file_subbed,
                     params = list(
                       processed_raw_data_df = df1
                       , current_df = df2
@@ -51,7 +51,7 @@ for (department in departments) {
                       , raw_data_filepath = filepath
                       )
                     )
-  file.rename(output_file, gsub('_', ' ', output_file))
+  file.rename(output_file_subbed, output_file)
 }
 
 getwd()
