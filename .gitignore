@@ -1,7 +1,5 @@
 !/.gitkeep
-raw_data/*.xls*
-raw_data/*.csv*
-
+raw_data/
 scorecard/scorecard_reports/
 testing/
 *.json
