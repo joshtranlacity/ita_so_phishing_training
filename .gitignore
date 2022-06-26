@@ -1,7 +1,11 @@
-scorecard/scorecard_reports/*
+raw_data/
+!raw_data/.gitkeep
+
+scorecard/scorecard_reports/
 !scorecard/scorecard_reports/.gitkeep
 testing/
 *.json
+
 
 # History files
 .Rhistory

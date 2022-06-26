@@ -1,6 +1,6 @@
 
 ## Load packages needed for .r and rmd file
-source("utils.R")
+source("scorecard/utils.R")
 packages <- utils.packages_vector()
 package_check <- lapply(packages, require, character.only = TRUE)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
