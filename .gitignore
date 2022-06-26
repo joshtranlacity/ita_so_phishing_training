@@ -4,9 +4,11 @@
 
 !/.gitkeep
 raw_data/
-scorecard/scorecard_reports/
 testing/
 *.json
+
+scorecard/scorecard_reports/
+training_phishing_reports/
 
 ###################################################
 ### R Template
