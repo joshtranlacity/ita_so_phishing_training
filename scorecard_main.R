@@ -1,8 +1,8 @@
 
 ## Load packages needed for .r and rmd file
+source("utils.R")
 packages <- utils.packages_vector()
 package.check <- lapply(packages, require, character.only = TRUE)
-source("utils.R")
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 ## Get raw data file path
@@ -29,7 +29,7 @@ write_xlsx(datasheet_names, paste0("./scorecard_reports/", season_current," Phis
 
 
 for (department in departments) {
-  output_file <- paste("./reports/", department,' - ', season_current, ' Phising Scorecard.pdf', sep='')
+  output_file <- paste("./scorecard_reports/", department,' - ', season_current, ' Phising Scorecard.pdf', sep='')
   output_file <- gsub(' ', '_', output_file)
   
   df1 <- utils.process_scorecard_assign_your_department(df, department)
