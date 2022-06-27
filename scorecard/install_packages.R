@@ -1,3 +1,4 @@
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 source("utils.R")
 
 packages <- utils.packages_vector()
@@ -26,3 +27,5 @@ tryCatch({
 # needed if running with Rscript through command line
 # install.packages("installr")
 # installr::install.pandoc() 
+
+cat("Finished checking/installing required packages.")
