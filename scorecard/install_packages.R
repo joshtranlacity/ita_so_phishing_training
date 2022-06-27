@@ -1,5 +1,5 @@
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-source("utils.R")
+# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+source("scorecard/utils.R")
 
 packages <- utils.packages_vector()
 package_check <- lapply(
