@@ -20,13 +20,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-tryCatch({
-  source("scorecard/utils.R")
-}, error = function(e) {
-  source("utils.R")
-}
-)
+source("utils.R")
+
 packages <- utils.packages_vector()
 package_check <- lapply(packages, require, character.only = TRUE)
 ```
