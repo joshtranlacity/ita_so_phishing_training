@@ -2,6 +2,7 @@
 ## Load packages needed for .r and rmd file
 # setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 source("scorecard/utils.R")
+
 packages <- utils.packages_vector()
 package_check <- lapply(packages, require, character.only = TRUE)
 
@@ -28,14 +29,14 @@ smry <- df %>%
 datasheet_names <- list("long" = df, "wide" = pvt, "summary" = smry)
 
 write_xlsx(datasheet_names
-  , paste0("./scorecard_reports/"
+  , paste0(getwd(), "/scorecard/scorecard_reports/"
     , season_current
     , " Phising Exercise Scorecard Processed Data.xlsx"
   )
 )
 
 for (department in departments) {
-  output_file <- paste("./scorecard_reports/"
+  output_file <- paste(getwd(), "/scorecard/scorecard_reports/"
     , department
     , " - "
     , season_current
@@ -50,7 +51,7 @@ for (department in departments) {
     filter(Department==department)
 
   write_xlsx(filtered_raw_data_df
-    , paste0("./scorecard_reports/"
+    , paste0(getwd(), "/scorecard/scorecard_reports/"
       , department
       , " - "
       , season_current
@@ -61,7 +62,7 @@ for (department in departments) {
   df2 <- utils.process_scorecard_season_current(df1)
   df3 <- utils.process_scorecard_season_trend(df1)
 
-  rmarkdown::render("scorecard_template.Rmd",
+  rmarkdown::render(paste0(getwd(), "/scorecard/scorecard_template.Rmd"),
                     output_file = output_file_subbed,
                     params = list(
                       processed_raw_data_df = df1
