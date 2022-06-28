@@ -54,7 +54,7 @@ for (department in departments) {
       , department
       , " - "
       , season_current
-      , " Phising Scorecard Detail.xlsx"
+      , " Phishing Scorecard Detail.xlsx"
     )
   )
 

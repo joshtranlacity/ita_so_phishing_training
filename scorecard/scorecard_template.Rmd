@@ -51,16 +51,17 @@ if (typeof(params$processed_raw_data_df) == "character"){
 season_current <- tail(levels(df$season), n = 1)
 ```
 
-![](Picture1.jpg){width=100%}
+![](banner.png){width=100%}
 
 ```{=latex}
-\fontsize{25}{25}
+\begingroup
 \begin{center}
+\fontfamily{phv}\fontsize{25}{18}\selectfont
 \textbf{Email Phishing Scorecard - `r season_current`}
 \\[5pt]
 \textbf{`r your_department`}
 \end{center}
-
+\endgroup
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center',fig.height=3.7}
@@ -70,11 +71,18 @@ shared_thm <- theme(plot.title = element_text(face = "bold", hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5)) +
   theme(legend.title= element_blank()
         , legend.position="bottom"
-        , plot.background = element_rect(color = "grey", size = 1)
+        , plot.background = element_roundrect(color = "grey95"
+                                              , size = 1
+                                              , r = grid::unit(0.05, "snpc")
+                                              )
         , plot.margin = margin(t = 0.5, r = 1, b = 0.3, l = 0.5, "cm"))
-series_colors <- c("cornflowerblue", "red")
+
+series_colors <- c("cornflowerblue", "darkorange")
+
 y_pct_scale <- scale_y_continuous(labels = scales::percent
   , breaks = scales::pretty_breaks(n = 6))
+
+
 ```
 
 
@@ -98,7 +106,7 @@ plt
 # Second plot
 plt <- ggplot(trend_df, aes(x = season, y = mean_rate)) +
   geom_point(aes(color = series)) +
-  geom_text(aes(label = scales::percent(mean_rate))
+  geom_text(aes(label = scales::percent(round(mean_rate, digits = 4)))
             , hjust = -0.1
             , vjust = 0
             , size = 2) +
@@ -106,8 +114,9 @@ plt <- ggplot(trend_df, aes(x = season, y = mean_rate)) +
   y_pct_scale +
   scale_color_manual(values = series_colors) +
   theme_bw() +
+  theme(axis.text.x = element_text(face="bold", size=12)) +
   labs(title = "Fail Rate Trend",
        x = "",
-       y = "") + shared_thm
+       y = "Fail Rate") + shared_thm
 plt
 ```

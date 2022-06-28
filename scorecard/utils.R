@@ -1,5 +1,5 @@
 utils.packages_vector <- function(){
-  return(c("tidyverse", "readxl", "janitor","ggplot2","tinytex","writexl","tidyr","rmarkdown"))
+  return(c("tidyverse", "readxl", "janitor","ggplot2","tinytex","writexl","tidyr","rmarkdown","openxlsx","ggfun"))
 }
 
 package_check <- lapply(utils.packages_vector(), require, character.only = TRUE)
@@ -12,7 +12,9 @@ utils.filter_scorecard_raw_data_by_department <- function(df, your_deptartment) 
 utils.process_scorecard_raw_data <- function(df) {
   df <- df %>%
     clean_names() %>%
-    arrange(date_sent)
+    arrange(date_sent) %>%
+    mutate(department = str_squish(department)) %>%
+    mutate(department = str_to_title(department))
 
   f <- unique(df$season)
   df$season <- factor(df$season, levels = f)
